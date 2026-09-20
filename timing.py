@@ -9,6 +9,18 @@
 #
 # Make sure the Django dev server is running first:
 #   python manage.py runserver
+#
+# -------------------------------------------------------------------
+# Contributor Notes
+#
+# Added additional timing statistics to help visualize cache impact:
+# - Slowest request time
+# - Improvement between first request and fastest request
+#
+# These metrics make it easier to compare performance before and after
+# implementing cache-aside strategies while keeping the original
+# functionality unchanged.
+# -------------------------------------------------------------------
 
 import urllib.request
 import time
@@ -24,23 +36,33 @@ ENDPOINTS = [
 
 def measure(label: str, url: str, runs: int = 3) -> None:
     times = []
+
     for _ in range(runs):
         start = time.perf_counter()
+
         try:
             with urllib.request.urlopen(url) as response:
                 response.read()
+
             elapsed = (time.perf_counter() - start) * 1000
             times.append(elapsed)
+
         except Exception as e:
             print(f"  ❌ {label}: {e}")
             return
 
     avg = sum(times) / len(times)
     fastest = min(times)
+    slowest = max(times)
+
     print(f"  {label}")
-    print(f"    First request : {times[0]:.1f}ms")
-    print(f"    Average       : {avg:.1f}ms")
+    print(f"    First request        : {times[0]:.1f}ms")
+    print(f"    Average              : {avg:.1f}ms")
     print(f"    Fastest (cache hit?) : {fastest:.1f}ms")
+    print(f"    Slowest              : {slowest:.1f}ms")
+
+    improvement = times[0] - fastest
+    print(f"    Improvement          : {improvement:.1f}ms")
     print()
 
 
