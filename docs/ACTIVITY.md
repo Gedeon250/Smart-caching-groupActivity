@@ -9,7 +9,7 @@
 
 ## Overview
 
-You have been given a working Django REST API for a blog platform with 500 posts
+we have been given a working Django REST API for a blog platform with 500 posts
 and 3 users. The API works — but it hits the database on **every single request**.
 
 Our job was to add a smart cache layer, level by level, until the API is fast,
