@@ -83,3 +83,20 @@ REST_FRAMEWORK = {
 }
 
 STATIC_URL = 'static/'
+
+# -------------------------------------------------------------------
+# Contributor Notes
+#
+# This project uses Django's built-in LocMemCache backend for
+# development and learning purposes. The cache stores data in memory,
+# reducing repeated database queries and improving API response time.
+#
+# Recommended cache durations used in the application:
+# - PostListView   : 300 seconds
+# - PostDetailView : 600 seconds
+# - MyDraftsView   : 120 seconds
+#
+# Cache data is automatically cleared when the Django server restarts.
+# For production environments, Redis or Memcached would typically be
+# used instead of LocMemCache.
+# -------------------------------------------------------------------
